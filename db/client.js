@@ -1,1 +1,1 @@
-console.log("this is client")
+console.log("This is the real client");

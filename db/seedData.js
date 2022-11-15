@@ -3,6 +3,7 @@ const{client} = require('./index');
 const{ createUser } = require('./users');
 const{createActivity} = require('./activities');
 const{createRoutine} = require('./routines');
+const{createRoutineActivities} = require('./routine_activities');
 
 
 async function dropTables(){
@@ -107,6 +108,14 @@ async function createInitialRoutines(){
     }
 }
 
+async function createRoutineActivities(){
+    try{
+        console.log("creating initial routine activities....")
+        const 
+    }
+}
+
+
 async function rebuildDB(){
     client.connect();
     await dropTables();
@@ -114,6 +123,7 @@ async function rebuildDB(){
     await createInitialUsers();
     await createInitialActivities();
     await createInitialRoutines();
+    await createRoutineActivities();
 
 
     client.end()

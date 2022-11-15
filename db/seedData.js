@@ -3,6 +3,7 @@ const{client} = require('./index');
 const{ createUser } = require('./users');
 const{createActivity} = require('./activities');
 const{createRoutine} = require('./routines');
+const{createRoutineActivities} = require('./routine_activities');
 
 
 async function dropTables(){
@@ -81,9 +82,11 @@ async function createInitialActivities(){
         console.log("creating inital activites");
         const shakeWeight = await createActivity({name:'shakeweighting',description:'shake the weight around and bust out the kcals'})
         const deadlift = await createActivity({name: 'deadlift', description:'Lift with your legs!!!'})
-        const run = await createActivity({name:'run',description:'put one foot in front of the other quickly'})
-        const pillowfighting = await createActivity({name:'pillowfight',description:'destroy you enemies in this multifight battle with authenticcally dull weapons'})
-        // console.log(deadlift, run, pillowfighting)
+        const sprint = await createActivity({name:'sprint',description:'put one foot in front of the other quickly'})
+        const legLift = await createActivity({name:'legLift',description:'Put your leg up in the air and then the other one.'})
+        const sitUp = await createActivity({name:'sitUp', description:'Sit up using your abs primarily, no using a jolt of movement'})
+        const planks = await createActivity({name:'Planks', description:'hold your body above the ground by your arms and feet, keeping your back straight.'})
+        // console.log(shakeweight, sitUp, sprint)
         console.log("success creating activities")
     }catch(error){
         console.log("this is an error for initial activities")
@@ -107,6 +110,19 @@ async function createInitialRoutines(){
     }
 }
 
+async function createInitialRoutineActivities(){
+    try{
+        console.log("creating initial routine activities....")
+        const routLegs = await createRoutineActivities({routineId:1,activityId:3,duration:10,count:1})
+        const routAbs = await createRoutineActivities({routineId:2,activityId:6,duration:1,count:3})
+        const routArms = await createRoutineActivities({routineId:3,activityId:1,duration:15,count:2})
+        console.log(routAbs,routArms,routLegs)
+    } catch(error){
+        console.log(error);
+    }
+}
+
+
 async function rebuildDB(){
     client.connect();
     await dropTables();
@@ -114,8 +130,8 @@ async function rebuildDB(){
     await createInitialUsers();
     await createInitialActivities();
     await createInitialRoutines();
-
-
+    await createInitialRoutineActivities();
+    
     client.end()
 }
 

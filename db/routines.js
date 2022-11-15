@@ -10,7 +10,6 @@ async function createRoutine({
         ON CONFLICT (name) DO NOTHING
         RETURNING*;
         `,[creatorId,isPublic,name,goal]);
-        console.log("is this call going through ")
         return routine;
     }catch(error){
         console.log(error)

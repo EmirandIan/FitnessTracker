@@ -1,8 +1,9 @@
 //create a bunch of functions that fill out the database
-const{client} = require('./index')
-const{
-    createUser
-} = require('./users');
+const{client} = require('./index');
+const{ createUser } = require('./users');
+const{createActivity} = require('./activities');
+const{createRoutine} = require('./routines');
+
 
 async function dropTables(){
     console.log("┻━┻︵ \(°□°)/ ︵ ┻━┻ flipping all tables... ")
@@ -50,10 +51,10 @@ async function createTables(){
             count INTEGER,
             UNIQUE("routineId","activityId")
         )`)
-        console.log("...success building tables!!!!")
+        console.log("┬─┬ノ( º _ ºノ)...success building tables!!!!")
     } catch(error){
         console.log(error);
-        console.log("failure creating tables")
+        console.log("failure creating tables눈_눈")
     }
 }
 
@@ -64,10 +65,10 @@ async function createInitialUsers(){
         const kimKanye = await createUser({username: 'North West', password:'I hate my dad'});
         const kanyeKim = await createUser({username: 'Psalm West', password:'Saint West'});
         const kimWest = await createUser({username:'Chicago West', password:'what happened to us'});
-        console.log(elonsSpring);
-        console.log(kimKanye);
-        console.log(kanyeKim);
-        console.log(kimWest);
+        // console.log(elonsSpring);
+        // console.log(kimKanye);
+        // console.log(kanyeKim);
+        // console.log(kimWest);
         console.log("success creating users!")
     } catch(error){
         console.error("error creating kaynes offspring")
@@ -78,20 +79,41 @@ async function createInitialUsers(){
 async function createInitialActivities(){
     try{
         console.log("creating inital activites");
-        const shakeWeight = await create
+        const shakeWeight = await createActivity({name:'shakeweighting',description:'shake the weight around and bust out the kcals'})
+        const deadlift = await createActivity({name: 'deadlift', description:'Lift with your legs!!!'})
+        const run = await createActivity({name:'run',description:'put one foot in front of the other quickly'})
+        const pillowfighting = await createActivity({name:'pillowfight',description:'destroy you enemies in this multifight battle with authenticcally dull weapons'})
+        // console.log(deadlift, run, pillowfighting)
+        console.log("success creating activities")
     }catch(error){
         console.log("this is an error for initial activities")
     }
 
 }
 
+async function createInitialRoutines(){
+    try{
+        console.log("create initial routines")
+        const legDay = await createRoutine({creatorId: '1', isPublic: true,name:'leg day'
+            ,goal:'feel the burn in those legs!'});
+        const abs = await createRoutine({creatorId:'3', isPublic:true,name:'abs'
+            ,goal:'in modern exercise one should workout their abs daily.'})
+        const armsDay = await createRoutine({creatorId:'2', isPublic:false,name:'armsday'
+            ,goal:'do high intensity lifting, benching mostly'})
+        console.log(legDay, abs, armsDay);
+        console.log("success creating initial routines")
+    }catch(error){
+        console.log(error);
+    }
+}
 
 async function rebuildDB(){
     client.connect();
     await dropTables();
     await createTables();
     await createInitialUsers();
-    // await createActivities();
+    await createInitialActivities();
+    await createInitialRoutines();
 
 
     client.end()

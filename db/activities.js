@@ -1,4 +1,4 @@
-
+const{client} = require('./index')
 async function createActivity({
     name, description
 }){
@@ -12,7 +12,8 @@ async function createActivity({
         `,[name, description]);
         return activity;
     } catch(error){
-        console.log("activity creation failed");
+        console.log(error)
+        
     }
 }
 

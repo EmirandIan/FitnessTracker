@@ -28,6 +28,15 @@ async function getRoutineByName(routName){
     }
 }
 
+//You should be able to get routine by user and then display 
+// the activities that are linked to it in routineactivities
+
+async function getRoutineByUser(userName){
+    try{
+        const { rows: [] }
+    }
+}
+
 async function createRoutine({
     creatorId,isPublic,name,goal
 }){
@@ -41,6 +50,15 @@ async function createRoutine({
         return routine;
     }catch(error){
         console.log(error)
+    }
+}
+
+async function getRoutinesWithoutActivities(){
+    try{
+        const{ rows: [ routine ] }= await client.query(`
+        SELECT * FROM routines `)
+    } catch(error){
+        console.log(error);
     }
 }
 

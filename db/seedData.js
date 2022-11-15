@@ -5,7 +5,6 @@ const{createActivity} = require('./activities');
 const{createRoutine} = require('./routines');
 const{createRoutineActivities} = require('./routine_activities');
 
-
 async function dropTables(){
     console.log("┻━┻︵ \(°□°)/ ︵ ┻━┻ flipping all tables... ")
     try{
@@ -131,7 +130,6 @@ async function rebuildDB(){
     await createInitialActivities();
     await createInitialRoutines();
     await createInitialRoutineActivities();
-    
     client.end()
 }
 

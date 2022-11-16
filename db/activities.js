@@ -21,7 +21,7 @@ async function getAllActivities(){
     try{
         console.log("getting all activities....")
     const { rows } = await client.query(
-        `SELECT * from activities`
+        `SELECT * from activities;`
     )
     console.log(rows);
     return rows;
@@ -38,7 +38,7 @@ async function getActivityById(id){
         }
         const{ rows: [activity] } = await client.query(`
         SELECT activity FROM activities
-        WHERE id=${id}
+        WHERE id=${id};
         `);
         return activity;
     }catch(error){

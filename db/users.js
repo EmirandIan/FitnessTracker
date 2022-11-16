@@ -1,7 +1,7 @@
 const { client } = require(".");
 
 async function getUserByUsername({
-    username
+    username, 
 }){
     console.log("getting user...")
     try{
@@ -54,16 +54,17 @@ async function createUser({
     }
 }
 
-async function getUser({
+async function getUser(
     username,password
-}){
+){
     console.log("getting user...")
     try{
-        const { rows: [user] } = await client.query(`
-        SELECT username, password FROM users 
-        WHERE username =${username}
-        `)
-        if(user.username == username && user.password == password ) return user
+        const { rows } = await client.query(`
+        SELECT * FROM users 
+        WHERE username =$1;
+        `,[username])
+        console.log(rows);
+        if(rows.username == username && rows.password == password ) return user
         else{return "user and or password incorrect!"};
     } catch(error){
         console.log(error);

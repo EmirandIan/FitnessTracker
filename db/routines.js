@@ -58,7 +58,7 @@ async function createRoutine({
 async function getRoutinesWithoutActivities(){
     try{
         const{ rows: [ routine ] }= await client.query(`
-        SELECT * FROM routines `)
+        SELECT * FROM routines;`)
     } catch(error){
         console.log(error);
     }

@@ -1,8 +1,9 @@
 //create a bunch of functions that fill out the database
 const{client} = require('./index');
-const{ createUser } = require('./users');
+const{ createUser, getUserById
+    ,getUserByUsername, getUser } = require('./users');
 const{createActivity} = require('./activities');
-const{createRoutine} = require('./routines');
+const{createRoutine, } = require('./routines');
 const{
     addActivityToRoutine, getRoutineActivityById,
     destroyRoutineActivity, getRoutineActivitiesByRoutine
@@ -124,6 +125,11 @@ async function createInitialRoutineActivities(){
     }
 }
 async function testDB(){
+    await getUserById(1);
+    await getUserByUsername('Psalm West');
+    await getUser('Psalm West','Saint West');
+    // await getAllRoutines();
+
     // functions to test in the testDB case
     // getRoutineActivityById, updateRoutineActivity, destroyRoutineActivity, getRoutineActivitiesByRoutine
     // getUser, getUserById, getUserByUsername, getActivityById,
@@ -140,7 +146,7 @@ async function rebuildDB(){
     await createInitialActivities();
     await createInitialRoutines();
     await createInitialRoutineActivities();
-    testDB()
+    await testDB()
     client.end()
 }
 

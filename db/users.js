@@ -54,8 +54,25 @@ async function createUser({
     }
 }
 
+async function getUser({
+    username,password
+}){
+    console.log("getting user...")
+    try{
+        const { rows: [user] } = await client.query(`
+        SELECT username, password FROM users 
+        WHERE username =${username}
+        `)
+        if(user.username == username && user.password == password ) return user
+        else{return "user and or password incorrect!"};
+    } catch(error){
+        console.log(error);
+    }
+}
+
 module.exports= {
     createUser,
     getUserById,
-    getUserByUsername
+    getUserByUsername,
+    getUser
 }

@@ -3,7 +3,10 @@ const{client} = require('./index');
 const{ createUser } = require('./users');
 const{createActivity} = require('./activities');
 const{createRoutine} = require('./routines');
-const{createRoutineActivities} = require('./routine_activities');
+const{
+    addActivityToRoutine, getRoutineActivityById,
+    destroyRoutineActivity, getRoutineActivitiesByRoutine
+        } = require('./routine_activities');
 
 async function dropTables(){
     console.log("┻━┻︵ \(°□°)/ ︵ ┻━┻ flipping all tables... ")
@@ -112,15 +115,22 @@ async function createInitialRoutines(){
 async function createInitialRoutineActivities(){
     try{
         console.log("creating initial routine activities....")
-        const routLegs = await createRoutineActivities({routineId:1,activityId:3,duration:10,count:1})
-        const routAbs = await createRoutineActivities({routineId:2,activityId:6,duration:1,count:3})
-        const routArms = await createRoutineActivities({routineId:3,activityId:1,duration:15,count:2})
+        const routLegs = await addActivityToRoutine({routineId:1,activityId:3,duration:10,count:1})
+        const routAbs = await addActivityToRoutine({routineId:2,activityId:6,duration:1,count:3})
+        const routArms = await addActivityToRoutine({routineId:3,activityId:1,duration:15,count:2})
         console.log(routAbs,routArms,routLegs)
     } catch(error){
         console.log(error);
     }
 }
-
+async function testDB(){
+    // functions to test in the testDB case
+    // getRoutineActivityById, updateRoutineActivity, destroyRoutineActivity, getRoutineActivitiesByRoutine
+    // getUser, getUserById, getUserByUsername, getActivityById,
+    // getAllRoutines, getAllPublicRoutines,getPublicRoutinesByUser,
+    // updateRoutine, destroyRoutine,getRoutineByName,getRoutineByUser,
+    // getRoutineById
+}
 
 async function rebuildDB(){
     client.connect();
@@ -130,7 +140,13 @@ async function rebuildDB(){
     await createInitialActivities();
     await createInitialRoutines();
     await createInitialRoutineActivities();
+    testDB()
     client.end()
 }
 
 rebuildDB()
+
+//final notes on the seed and the rest of the database to finish
+//every function inside the testDB needs to be created or tested (some already exist and haven't been tested)
+// I need to finish building out the index.js file, exporting the functions through index.js to emir
+// 

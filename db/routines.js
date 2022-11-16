@@ -33,7 +33,9 @@ async function getRoutineByName(routName){
 
 async function getRoutineByUser(userName){
     try{
-        const { rows: [] }
+        // const { rows: [] }
+    }catch(error){
+        console.log(error)
     }
 }
 
@@ -65,6 +67,14 @@ async function getRoutinesWithoutActivities(){
 module.exports= {
     createRoutine,
     getRoutineById,
-    getRoutineByName
+    // getAllRoutines,
+    // getAllPublicRoutines,
+    // getPublicRoutinesByUser,
+    // getPublicRoutinesByActivity,
+    // updateRoutine,
+    // destroyRoutine,
+    getRoutineByName,
+    getRoutinesWithoutActivities,
+    getRoutineByUser
 }
 

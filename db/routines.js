@@ -1,5 +1,32 @@
 const{client} = require('./index')
 
+async function createRoutine({
+    creatorId,isPublic,name,goal
+}){
+    try{
+        const { rows: [routine] }= await client.query(`
+        INSERT INTO routines("creatorId","isPublic",name,goal)
+        VALUES ($1,$2,$3,$4)
+        ON CONFLICT (name) DO NOTHING
+        RETURNING*;
+        `,[creatorId,isPublic,name,goal]);
+        return routine;
+    }catch(error){
+        console.log(error)
+    }
+}
+
+async function getAllRoutines(){
+    console.log("getting all routines")
+    try{
+        const { rows } = await client.query(`
+        SELECT * FROM routines;`)
+        console.log(rows);
+        return rows;
+    }catch(error){
+        console.log(error);
+    }
+}
 async function getRoutineById(routineId){
     console.log("getting user by id");
     try{
@@ -16,6 +43,8 @@ async function getRoutineById(routineId){
         console.log(error);
     }
 }
+
+
 async function getRoutineByName(routName){
     try{
         const { rows: [name] } = await client.query(`
@@ -39,21 +68,7 @@ async function getRoutineByUser(userName){
     }
 }
 
-async function createRoutine({
-    creatorId,isPublic,name,goal
-}){
-    try{
-        const { rows: [routine] }= await client.query(`
-        INSERT INTO routines("creatorId","isPublic",name,goal)
-        VALUES ($1,$2,$3,$4)
-        ON CONFLICT (name) DO NOTHING
-        RETURNING*;
-        `,[creatorId,isPublic,name,goal]);
-        return routine;
-    }catch(error){
-        console.log(error)
-    }
-}
+
 
 async function getRoutinesWithoutActivities(){
     try{
@@ -67,7 +82,7 @@ async function getRoutinesWithoutActivities(){
 module.exports= {
     createRoutine,
     getRoutineById,
-    // getAllRoutines,
+    getAllRoutines,
     // getAllPublicRoutines,
     // getPublicRoutinesByUser,
     // getPublicRoutinesByActivity,

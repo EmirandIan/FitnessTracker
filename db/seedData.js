@@ -3,7 +3,7 @@ const{client} = require('./index');
 const{ createUser, getUserById
     ,getUserByUsername, getUser } = require('./users');
 const{createActivity} = require('./activities');
-const{createRoutine, } = require('./routines');
+const{createRoutine,getAllRoutines } = require('./routines');
 const{
     addActivityToRoutine, getRoutineActivityById,
     destroyRoutineActivity, getRoutineActivitiesByRoutine
@@ -128,7 +128,7 @@ async function testDB(){
     await getUserById(1);
     await getUserByUsername('Psalm West');
     await getUser('Psalm West','Saint West');
-    // await getAllRoutines();
+    await getAllRoutines();
 
     // functions to test in the testDB case
     // getRoutineActivityById, updateRoutineActivity, destroyRoutineActivity, getRoutineActivitiesByRoutine

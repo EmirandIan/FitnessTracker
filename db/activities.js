@@ -1,4 +1,6 @@
 const{client} = require('./index')
+
+
 async function createActivity({
     name, description
 }){
@@ -45,6 +47,23 @@ async function getActivityById(id){
         console.log(error);
     }
 }
+
+async function updateActivity({
+    id,name,description }){
+    console.log("updating activity by id" + id)
+    try{
+        if(!id){
+            return null
+        }
+            const{ rows: [activity] } = await client.query(`
+            UPDATE activities SET name=&1, description=$2
+            WHERE id=${id}`,[name,description])
+            console.log("") 
+    } catch(error){
+        console.log(error)
+    }
+}
+
 module.exports= {
     createActivity,
     getAllActivities,

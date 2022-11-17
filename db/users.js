@@ -1,39 +1,5 @@
 const { client } = require(".");
 
-async function getUserByUsername({
-    username, 
-}){
-    console.log("getting user...")
-    try{
-        const { rows: [ user ] } = await client.query(`
-        SELECT * FROM users
-        WHERE username = $1;
-        `,[username]);
-        console.log("user getto")
-        return user;
-    } catch(error){
-        console.log("there was an error getting the user...")
-        throw error;
-    }
-}
-async function getUserById({
-    id
-}){
-    console.log("calling getUserByID...")
-    try{
-        if (!id){
-            return null
-        }
-        const { rows: [ user ] } = await client.query(`
-            SELECT * FROM users WHERE id=${id}
-            `);
-        return user;
-    } catch(error){
-        console.log("error with get user by id");
-    }
-}
-
-
 async function createUser({
     username,
     password,
@@ -70,10 +36,47 @@ async function getUser(
         console.log(error);
     }
 }
+async function getUserByUsername({
+    username, 
+}){
+    console.log("getting user...")
+    try{
+        const { rows: [ user ] } = await client.query(`
+        SELECT * FROM users
+        WHERE username = $1;
+        `,[username]);
+        console.log("user getto")
+        return user;
+    } catch(error){
+        console.log("there was an error getting the user...")
+        throw error;
+    }
+}
+async function getUserById({
+    id
+}){
+    console.log("calling getUserByID...")
+    try{
+        if (!id){
+            return null
+        }
+        const { rows: [ user ] } = await client.query(`
+            SELECT * FROM users WHERE id=${id}
+            `);
+        return user;
+    } catch(error){
+        console.log("error with get user by id");
+    }
+}
+
+
+
+
+
 
 module.exports= {
     createUser,
-    getUserById,
+    getUser,
     getUserByUsername,
-    getUser
+    getUserById
 }

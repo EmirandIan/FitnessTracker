@@ -1,4 +1,5 @@
 const{client} = require('./index');
+
 async function addActivityToRoutine({
     routineId,activityId,duration,count
 }){
@@ -18,7 +19,7 @@ async function getRoutineActivityById(id){
     try{
         console.log("getting routine activity by id")
         const { rows: [routineActivity] } = await client.query(`
-        SELECT * FROM routineActivities
+        SELECT * FROM "routineActivities"
         WHERE id =$1;
         `,[id]);
 
@@ -28,26 +29,48 @@ async function getRoutineActivityById(id){
                 message:"could not find routineActivity with that id"
             }
         }
-        console.log("routineActivity found")
+        // console.log("routineActivity found" + Object.keys(routineActivity))
+        // console.log("routineActivity found" + routineActivity.count)
+        return routineActivity
     } catch(error){
         console.log(error);
     }
 }
 
 
-// Unfinished update patch command
-// async function updateRoutineActivity({ id, count, duration}){
-//     console.log("patching routine activity...")
-//     try{
-//         const 
-//     }
-// }
+// Unfinished update patch command (maybe return to this one)
+// updateroutineActivity should be thought of as id, fields{duration, count}
+// think of this function as NEEDING an id but allowing you to change either duration count or both. 
+async function updateRoutineActivity(id, fields={})
+    {
+    const setString = Object.keys(fields).map(
+        //interpolated insert that allows the method chain to send an object value into sql
+        (key, index) => `"${ key }"=$${ index + 1}`
+        ).join(', ');
+    if (setString.length === 0){
+        console.log("failure")
+        return;
+    }
+    console.log("patching routine activity..."  + id)
+    try{
+        const { rows: [routine] } = await client.query(`
+        UPDATE "routineActivities" SET ${setString}
+        WHERE id=${id} RETURNING*;
+        `, Object.values(fields));
+
+        console.log(routine);
+        console.log("patched routineActivity " + id)
+        return routine;
+    } catch(error){
+        console.log(error)
+    }
+}
 
 async function destroyRoutineActivity(id){
     console.log("attempting to delete number " + id + "from routine activities")
     try{
     await client.query(`
-        DELETE FROM routineActivities
+        DELETE FROM "routineActivities"
         WHERE id =${id}`)
     console.log("Deleted routine number " + id);
     }catch(error){
@@ -55,13 +78,14 @@ async function destroyRoutineActivity(id){
     }
 }
 
-async function getRoutineActivitiesByRoutine(routine){
-    console.log("attempting to get routineActivities by routine name " + routine);
+async function getRoutineActivitiesByRoutine(id){
+    console.log("attempting to get routineActivities by routine name " + id);
     try{
         const { rows: [routineActivity]} = await client.query(`
-        SELECT FROM routineActivities
-        WHERE routine =$1
-        `,[routine]);
+        SELECT FROM "routineActivities"
+        WHERE 'creatorid' =$1
+        `,[id]);
+        console.log(routineActivity)
         return routineActivity;
     } catch(error){
         console.log(error);
@@ -71,7 +95,7 @@ async function getRoutineActivitiesByRoutine(routine){
 module.exports={
     addActivityToRoutine,
     getRoutineActivityById,
-    // updateRoutineActivity,
+    updateRoutineActivity,
     destroyRoutineActivity,
     getRoutineActivitiesByRoutine
 };

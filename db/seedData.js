@@ -3,10 +3,10 @@ const{client} = require('./index');
 const{ createUser, getUserById
     ,getUserByUsername, getUser } = require('./users');
 const{createActivity} = require('./activities');
-const{createRoutine,getAllRoutines } = require('./routines');
+const{createRoutine,getAllRoutines,updateRoutine } = require('./routines');
 const{
     addActivityToRoutine, getRoutineActivityById,
-    destroyRoutineActivity, getRoutineActivitiesByRoutine
+    destroyRoutineActivity, getRoutineActivitiesByRoutine, updateRoutineActivity
         } = require('./routine_activities');
 
 async function dropTables(){
@@ -129,12 +129,17 @@ async function testDB(){
     await getUserByUsername('Psalm West');
     await getUser('Psalm West','Saint West');
     await getAllRoutines();
+    await updateRoutine({id:1, isPublic: true, name: 'ankle day', goal: 'make sure to do lots of calf stretching'})
+    await getRoutineActivityById(1);
+    await updateRoutineActivity(1,{duration:10,count:30}) //haha I got THIS to work, WOW.
+    await destroyRoutineActivity(1);
+    await getRoutineActivitiesByRoutine('leg day');
 
     // functions to test in the testDB case
-    // getRoutineActivityById, updateRoutineActivity, destroyRoutineActivity, getRoutineActivitiesByRoutine
-    // getUser, getUserById, getUserByUsername, getActivityById,
-    // getAllRoutines, getAllPublicRoutines,getPublicRoutinesByUser,
-    // updateRoutine, destroyRoutine,getRoutineByName,getRoutineByUser,
+    // getRoutineActivitiesByRoutine
+    // getActivityById,
+    // getAllPublicRoutines,getPublicRoutinesByUser,
+    // destroyRoutine,getRoutineByName,getRoutineByUser,
     // getRoutineById
 }
 

@@ -135,6 +135,7 @@ async function testDB(){
     await destroyRoutineActivity(1);
     await getRoutineActivitiesByRoutine('leg day');
 
+    //get routine activities by routine is not functioning properly yet.
     // functions to test in the testDB case
     // getRoutineActivitiesByRoutine
     // getActivityById,

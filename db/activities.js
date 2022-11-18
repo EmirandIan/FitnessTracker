@@ -39,9 +39,10 @@ async function getActivityById(id){
             return null
         }
         const{ rows: [activity] } = await client.query(`
-        SELECT activity FROM activities
+        SELECT * FROM activities
         WHERE id=${id};
         `);
+        console.log("activity gotten " + activity)
         return activity;
     }catch(error){
         console.log(error);
@@ -56,9 +57,9 @@ async function updateActivity({
             return null
         }
             const{ rows: [activity] } = await client.query(`
-            UPDATE activities SET name=&1, description=$2
+            UPDATE activities SET name=$1, description=$2
             WHERE id=${id}`,[name,description])
-            console.log("") 
+            console.log("Activity "+ id, "changed to ", name," ", description) 
     } catch(error){
         console.log(error)
     }
@@ -67,5 +68,6 @@ async function updateActivity({
 module.exports= {
     createActivity,
     getAllActivities,
-    getActivityById
+    getActivityById,
+    updateActivity
 }

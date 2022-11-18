@@ -36,16 +36,16 @@ async function getUser(
         console.log(error);
     }
 }
-async function getUserByUsername({
+async function getUserByUsername(
     username, 
-}){
+){
     console.log("getting user...")
     try{
         const { rows: [ user ] } = await client.query(`
-        SELECT * FROM users
+        SELECT id, username FROM users
         WHERE username = $1;
         `,[username]);
-        console.log("user getto")
+        console.log("user " , user)
         return user;
     } catch(error){
         console.log("there was an error getting the user...")

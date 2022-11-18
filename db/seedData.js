@@ -2,8 +2,10 @@
 const{client} = require('./index');
 const{ createUser, getUserById
     ,getUserByUsername, getUser } = require('./users');
-const{createActivity} = require('./activities');
-const{createRoutine,getAllRoutines,updateRoutine } = require('./routines');
+const{createActivity,getAllActivities,getActivityById, updateActivity} = require('./activities');
+const{createRoutine,getAllRoutines,getRoutineById,
+    updateRoutine, destroyRoutine, getRoutineByUser,
+    getRoutineByName, getAllPublicRoutines, getPublicRoutinesByUser  } = require('./routines');
 const{
     addActivityToRoutine, getRoutineActivityById,
     destroyRoutineActivity, getRoutineActivitiesByRoutine, updateRoutineActivity
@@ -125,23 +127,30 @@ async function createInitialRoutineActivities(){
     }
 }
 async function testDB(){
-    await getUserById(1);
-    await getUserByUsername('Psalm West');
-    await getUser('Psalm West','Saint West');
-    await getAllRoutines();
-    await updateRoutine({id:1, isPublic: true, name: 'ankle day', goal: 'make sure to do lots of calf stretching'})
-    await getRoutineActivityById(1);
-    await updateRoutineActivity(1,{duration:10,count:30}) //haha I got THIS to work, WOW.
-    await destroyRoutineActivity(1);
-    await getRoutineActivitiesByRoutine('leg day');
-
+    // await getUserById(1);
+    // await getUserByUsername('Psalm West');
+    // await getUser('Psalm West','Saint West');
+    
+    // await updateRoutine({id:1, isPublic: true, name: 'ankle day', goal: 'make sure to do lots of calf stretching'})
+    // await getRoutineActivityById(1); //getting object object
+    // await updateRoutineActivity(1,{duration:10,count:30}) //haha I got THIS to work, WOW.
+    // await destroyRoutineActivity(1);
+    // await destroyRoutine(1);
+    // await updateActivity({id:1,name:'Shock your abs',description:'Well shakeweighting didnt work maybe shocking my abs will'})
+    // await getActivityById(1)
+    // await getRoutineById(2);
+    // await getRoutineByUser(2);
+    // await getRoutineByName('armsday') //getting object object
     //get routine activities by routine is not functioning properly yet.
+    // await getRoutineActivitiesByRoutine(2); //returning object/object
+    // await getAllPublicRoutines();
+    // await getUserByUsername('North West');
+    // await getPublicRoutinesByUser('North West');
+    const allRoutines = await getAllRoutines();
+    console.log(allRoutines);
     // functions to test in the testDB case
-    // getRoutineActivitiesByRoutine
-    // getActivityById, 
-    // getAllPublicRoutines,getPublicRoutinesByUser,
-    // destroyRoutine,getRoutineByName,getRoutineByUser,
-    // getRoutineById
+    // getPublicRoutinesByUser,
+    // getRoutineByName,
 }
 
 async function rebuildDB(){

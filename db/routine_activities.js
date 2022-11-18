@@ -72,20 +72,20 @@ async function destroyRoutineActivity(id){
     await client.query(`
         DELETE FROM "routineActivities"
         WHERE id =${id}`)
-    console.log("Deleted routine number " + id);
+    console.log("Deleted routine Activity number " + id);
     }catch(error){
         console.log(error);
     }
 }
 
 async function getRoutineActivitiesByRoutine(id){
-    console.log("attempting to get routineActivities by routine name " + id);
+    console.log("attempting to get routineActivities by routine id " + id);
     try{
         const { rows: [routineActivity]} = await client.query(`
-        SELECT FROM "routineActivities"
-        WHERE 'creatorid' =$1
-        `,[id]);
-        console.log(routineActivity)
+        SELECT * FROM "routineActivities"
+        WHERE id =${id};
+        `);
+        console.log("this is routine activity   " +Object.keys(routineActivity))
         return routineActivity;
     } catch(error){
         console.log(error);
@@ -95,7 +95,7 @@ async function getRoutineActivitiesByRoutine(id){
 module.exports={
     addActivityToRoutine,
     getRoutineActivityById,
-    updateRoutineActivity,
+    updateRoutineActivity, //unfinished
     destroyRoutineActivity,
     getRoutineActivitiesByRoutine
 };

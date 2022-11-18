@@ -138,7 +138,7 @@ async function testDB(){
     //get routine activities by routine is not functioning properly yet.
     // functions to test in the testDB case
     // getRoutineActivitiesByRoutine
-    // getActivityById,
+    // getActivityById, 
     // getAllPublicRoutines,getPublicRoutinesByUser,
     // destroyRoutine,getRoutineByName,getRoutineByUser,
     // getRoutineById

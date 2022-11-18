@@ -16,17 +16,43 @@ async function createRoutine({
     }
 }
 
+async function updateRoutine({
+    id, isPublic,name,goal
+}){ console.log("updating routine " + "")
+    try{
+        const routineUpdate = await client.query(`
+        UPDATE routines SET "isPublic"=$1, name=$2, goal=$3
+        WHERE id=${id}`,[isPublic,name,goal])
+        console.log("routineUpdate")
+        return routineUpdate
+    }catch(error){
+        console.log(error)
+    }
+}
+
+async function destroyRoutine(id){
+    // console.log("destroying id by name"  + )
+}
+
 async function getAllRoutines(){
     console.log("getting all routines")
     try{
         const { rows } = await client.query(`
-        SELECT * FROM routines;`)
+        SELECT routines.*, "routineActivities".*, activities.* AS activity
+        FROM routines
+        JOIN "routineActivities" ON routines.id = "routineActivities"."routineId"
+        JOIN activities ON activities.id = "routineActivities"."activityId"
+        GROUP BY activities.id, routines.id, "routineActivities".id;
+        `);
+        // const { rows }= await client.query(`
+        // SELECT activities.*`)
         console.log(rows);
         return rows;
     }catch(error){
         console.log(error);
     }
 }
+
 async function getRoutineById(routineId){
     console.log("getting user by id");
     try{
@@ -43,7 +69,6 @@ async function getRoutineById(routineId){
         console.log(error);
     }
 }
-
 
 async function getRoutineByName(routName){
     try{
@@ -68,12 +93,11 @@ async function getRoutineByUser(userName){
     }
 }
 
-
-
 async function getRoutinesWithoutActivities(){
     try{
         const{ rows: [ routine ] }= await client.query(`
         SELECT * FROM routines;`)
+        return routine;
     } catch(error){
         console.log(error);
     }
@@ -81,15 +105,15 @@ async function getRoutinesWithoutActivities(){
 
 module.exports= {
     createRoutine,
-    getRoutineById,
+    updateRoutine,
+    // destroyRoutine,
     getAllRoutines,
+    getRoutineById,
+    getRoutineByName,
+    getRoutineByUser,
     // getAllPublicRoutines,
     // getPublicRoutinesByUser,
     // getPublicRoutinesByActivity,
-    // updateRoutine,
-    // destroyRoutine,
-    getRoutineByName,
-    getRoutinesWithoutActivities,
-    getRoutineByUser
+    getRoutinesWithoutActivities
 }
 

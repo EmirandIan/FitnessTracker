@@ -5,7 +5,8 @@ const{ createUser, getUserById
 const{createActivity,getAllActivities,getActivityById, updateActivity} = require('./activities');
 const{createRoutine,getAllRoutines,getRoutineById,
     updateRoutine, destroyRoutine, getRoutineByUser,
-    getRoutineByName, getAllPublicRoutines, getPublicRoutinesByUser  } = require('./routines');
+    getRoutineByName, getAllPublicRoutines, getPublicRoutinesByUser,
+    getPublicRoutinesByActivity  } = require('./routines');
 const{
     addActivityToRoutine, getRoutineActivityById,
     destroyRoutineActivity, getRoutineActivitiesByRoutine, updateRoutineActivity
@@ -146,11 +147,11 @@ async function testDB(){
     // await getAllPublicRoutines();
     // await getUserByUsername('North West');
     // await getPublicRoutinesByUser('North West');
-    const allRoutines = await getAllRoutines();
-    console.log(allRoutines);
+    // await getAllRoutines();
+    // await getPublicRoutinesByActivity({id:2});
+
     // functions to test in the testDB case
-    // getPublicRoutinesByUser,
-    // getRoutineByName,
+    await getRoutineByName('leg day');
 }
 
 async function rebuildDB(){

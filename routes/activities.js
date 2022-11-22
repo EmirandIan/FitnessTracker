@@ -1,39 +1,38 @@
 const express = require('express');
-const router = express.Router();
-const activitiesRouter = express.Router;
+const activitiesRouter = express.Router();
+const {requireUser} = require("./utils");
 
-
-
+console.log(1);
 const { 
     createActivity,
     getAllActivities,
-    getRoutineActivityById,
     updateActivity,
+} = require("../db/activities")
+const{
+  getRoutineActivityById
 } = require("../db/activities")
 
 
 activitiesRouter.get('/:activityId/routines', async (req, res, next) => {
-    try {
-        const id = req.params.activityId;
-        const activity = { id: id };
-        const routine = await getRoutineActivityById(activity);
-        if (routine.length === 0)
-          res.send({
-            message: `Activity ${id} not found`,
-           name: 'Activity not found Error',
-           error: 'Activity dose not  exist',
-          });
-        
-        
-            res.send({ routine });
-          } catch ({ name, message }) {
-            next({ name, message });
-          }
-        });
+console.log(3)
+  try {
+    const id = req.params;
+    const routine = await getRoutineActivityById(id);
+    if (routine.length === 0)
+      res.send({
+        message: `Activity ${id} not found`,
+        name: 'Activity not found Error',
+        error: 'Activity dose not  exist',
+    });
+        res.send({routine});
+    } catch (error) {
+        next(error);
+    }
+});
  
 
 
-
+console.log(2)
 activitiesRouter.get('/', async (req, res) => {
   const activities = await getAllActivities();
   res.send({ activities });
@@ -87,6 +86,6 @@ activitiesRouter.get('/', async (req, res) => {
   
     
 
-  module.exports = router;
+  module.exports = activitiesRouter;
 
   

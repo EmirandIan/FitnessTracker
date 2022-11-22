@@ -50,6 +50,7 @@ async function getUser(
         console.log(error);
     }
 }
+
 async function getUserByUsername(
     username, 
 ){
@@ -82,11 +83,6 @@ async function getUserById({
         console.log("error with get user by id");
     }
 }
-
-
-
-
-
 
 module.exports= {
     createUser,

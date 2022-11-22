@@ -67,9 +67,9 @@ async function getUserByUsername(
         throw error;
     }
 }
-async function getUserById({
+async function getUserById(
     id
-}){
+){
     console.log("calling getUserByID...")
     try{
         if (!id){

@@ -41,7 +41,7 @@ routineActivitiesRouter.patch('/:routineActivityId', async (req, res, next) => {
   }
 );
 
-router.delete("/:routineActivityId", async (req, res, next) => {
+routineActivitiesRouter.delete("/:routineActivityId", async (req, res, next) => {
     const { routineActivityId } = req.params;
     try {
       const routineActivity = await getRoutineActivityById(routineActivityId);

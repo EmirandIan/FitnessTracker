@@ -31,62 +31,61 @@ activitiesRouter.get('/:activityId/routines', async (req, res, next) => {
           }
         });
  
-
-
-
 activitiesRouter.get('/', async (req, res) => {
   const activities = await getAllActivities();
   res.send({ activities });
 });
-  activitiesRouter.post('/', requireUser, async (req, res, next) => {
-    const { name, description, } = req.body;
-    //const activities 
-    const activity = await createActivity(activityData);
-    
-    const activityData = { name, description };
-    try {
-    if  (!activity) {
-      next({
-        name: "ErrorGettingActivities",
-        message: "Activity does not exist",
-      });
-    }
-        res.send(activity);
-      } catch (error) {
-        next(error);
-      }
-  });
-         
-  activitiesRouter.patch('/:activityId', async (req, res, next) => {
-        const { activityId } = req.params;
-        const { name, description } = req.body;
-      
-        const updateFields = {};
 
-        if (name) {
-          updateFields.name = name;
-        }
+
+activitiesRouter.post('/', requireUser, async (req, res, next) => {
+  const { name, description, } = req.body;
+  //const activities 
+  const activity = await createActivity(activityData);
+    
+  const activityData = { name, description };
+  try {
+  if  (!activity) {
+    next({
+      name: "ErrorGettingActivities",
+      message: "Activity does not exist",
+    });
+  }
+      res.send(activity);
+    } catch (error) {
+      next(error);
+    }
+});
+         
+activitiesRouter.patch('/:activityId', async (req, res, next) => {
+      const { activityId } = req.params;
+      const { name, description } = req.body;
       
-        if (description) {
-          updateFields.description = description;
+      const updateFields = {};
+
+      if (name) {
+        updateFields.name = name;
+      }
+      
+      if (description) {
+        updateFields.description = description;
+      }
+      try {
+        if (req.user) {
+          const updatedActivity = await updateActivity(activityId, updateFields);
+          res.send({ activity: updatedActivity });
+        } else {
+          next({
+            name: "UserNotLoggedIn",
+            message: "Login to update activity",
+          });
         }
-        try {
-          if (req.user) {
-            const updatedActivity = await updateActivity(activityId, updateFields);
-            res.send({ activity: updatedActivity });
-          } else {
-            next({
-              name: "UserNotLoggedIn",
-              message: "Login to update activity",
-            });
-          }
-        } catch ({ name, description }) {
-          next({ name, description });
-        }
-      });
+      } catch ({ name, description }) {
+        next({ name, description });
+      }
+    });
   
     
 
-  module.exports = router;
+module.exports = router;
 
   

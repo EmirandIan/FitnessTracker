@@ -1,5 +1,6 @@
 const express = require('express');
 const routinesRouter = express.Router();
+const {requireUser} = require('./utils')
 
 const {
   getAllPublicRoutines,
@@ -9,7 +10,7 @@ const {
   destroyRoutine,
   addActivityToRoutine,
   getRoutineActivityById,
-} = require("../db");
+} = require("../db/routines");
 
 // GET /api/routines
 
@@ -28,8 +29,9 @@ routinesRouter.get("/", async (req, res) => {
   res.send(
     allRoutines);
 });
-   
+   console.log("the real error")
 routinesRouter.post("/", requireUser, async (req, res, next) => {
+  console.log("error")
   const { name, goal, isPublic = "" } = req.body;
   const createNewRoutine = {};
   try {
@@ -39,8 +41,9 @@ routinesRouter.post("/", requireUser, async (req, res, next) => {
     createNewRoutine.isPublic = isPublic;
     const routine = await createRoutine(createNewRoutine);
     res.send(routine);
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch ( error ) {
+    console.log("no good",error)
+    next( error );
   }
 });
 
@@ -72,7 +75,7 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
   }
 });
 
-usersRouter.get('/:username/routines', async (req, res, next) => {
+routinesRouter.get('/:username/routines', async (req, res, next) => {
   const {username} = req.params;
   try{
     const userRoutines = await getPublicRoutinesByUser(username);

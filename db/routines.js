@@ -21,11 +21,12 @@ async function updateRoutine({
     id, isPublic,name,goal
 }){ console.log("updating routine " + "")
     try{
-        const routineUpdate = await client.query(`
+        const {rows: [routine]} = await client.query(`
         UPDATE routines SET "isPublic"=$1, name=$2, goal=$3
-        WHERE id=${id}`,[isPublic,name,goal])
+        WHERE id=${id}
+        RETURNING *`,[isPublic,name,goal])
         console.log("routineUpdate")
-        return routineUpdate
+        return routine
     }catch(error){
         console.log(error)
     }
@@ -137,12 +138,12 @@ async function getRoutineByUser(userId){
 async function getAllPublicRoutines(){
     try{
         console.log("getting all public routines")
-        const{ rows: [routine] }= await client.query(`
+        const{ rows: routine }= await client.query(`
         SELECT * FROM routines 
         WHERE "isPublic" = true;
         `)
         console.log(routine)
-        return routine
+        return attachActivitiesToRoutines(routine)
     }catch(error){
         console.log(error);
     }

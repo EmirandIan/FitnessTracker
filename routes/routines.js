@@ -1,6 +1,5 @@
 const express = require('express');
-const router = express.Router();
-const routinesRouter = express.Router;
+const routinesRouter = express.Router();
 
 // GET /api/routines
 
@@ -11,13 +10,11 @@ const routinesRouter = express.Router;
 // DELETE /api/routines/:routineId
 
 // POST /api/routines/:routineId/activities
-
-
 routinesRouter.get('/', async (req, res, next) => {
     try {
       const allRoutines = await getAllRoutines();
   
-      const routines = allPosts.filter(post => {
+      const routines = allRoutines.filter(post => {
         // the post is active, doesn't matter who it belongs to
         if (post.active) {
           return true;
@@ -40,11 +37,4 @@ routinesRouter.get('/', async (req, res, next) => {
     }
   });
   
-
-
-
-
-
-
-module.exports = router;
-
+module.exports = routinesRouter;

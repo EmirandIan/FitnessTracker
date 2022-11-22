@@ -106,12 +106,12 @@ async function getRoutineById(routineId){
 async function getRoutineByName(routName){
     try{
         console.log("getting routine by name" , routName)
-        const { rows: [name] } = await client.query(`
+        const { rows } = await client.query(`
         SELECT * FROM routines
-        WHERE name = $1;
+        WHERE name=$1;
         `,[routName]);
-        console.log("getting routine " , name);
-        return name;
+        console.log("routine acquired!" , rows);
+        return rows;
     }catch(error){
         console.log(error);
     }
@@ -166,7 +166,7 @@ async function getPublicRoutinesByUser(user){
 // async function getPublicRoutinesByActivity(activityId){
 //     console.log("getting public routines by activity")
 //     try{
-//         const activityId  = await getActivityById(activityId);
+//         const routineId = await get
 //         console.log("getting routine By activityid" , activityId)
 //         const{ rows=[ routine ] }= await client.query(`
 //         SELECT * FROM routines
@@ -174,9 +174,27 @@ async function getPublicRoutinesByUser(user){
 //         "activityId" =${activityId}
 //         `)
 //         console.log()
+//         return routine;
+//     }catch(error){
+//         console.log(error);
 //     }
 
 // }
+
+async function getPublicRoutinesByActivity({ id }) {
+    try{
+      const {rows: id}=await client.query (`
+      SELECT activity FROM routines
+      WHERE activity=${id};
+      `)
+      const activity =await Promise.all (id.map(
+        activity=> getPublicRoutinesByActivity(activity.id)
+      ));
+  return activity;
+  }catch(error){
+    console.log(error);
+    }
+  }
 
 async function getRoutinesWithoutActivities(){
     try{
@@ -201,7 +219,7 @@ module.exports= {
     getRoutineByUser,
     getAllPublicRoutines,
     getPublicRoutinesByUser,
-    // getPublicRoutinesByActivity,
+    getPublicRoutinesByActivity,
     getRoutinesWithoutActivities
 }
 

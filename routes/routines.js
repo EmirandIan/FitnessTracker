@@ -1,6 +1,5 @@
 const express = require('express');
-const router = express.Router();
-const routinesRouter = express.Router;
+const routinesRouter = express.Router();
 
 const {
   getAllPublicRoutines,
@@ -56,6 +55,7 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
       next({
         name: "RoutineUpdateError",
         message: `User ${req.user.username} is not allowed to update ${originalRoutine.name}`,
+
       });
     } else {
       const updatedRoutine = await updateRoutine({
@@ -66,8 +66,26 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
       });
       res.send(updatedRoutine);
     }
+    
   } catch ({ name, message }) {
     next({ name, message });
+  }
+});
+
+usersRouter.get('/:username/routines', async (req, res, next) => {
+  const {username} = req.params;
+  try{
+    const userRoutines = await getPublicRoutinesByUser(username);
+    if(!username) {
+      next({
+        username: "username does not exist",
+        routines: "public routines do not exist",
+        message: "There are no public routines for this user"
+      });
+      res.send(userRoutines)
+    }
+  } catch ({message}) {
+    return (username)
   }
 });
 
@@ -114,5 +132,5 @@ routinesRouter.post("/:routineId/activities", requireUser, async (req, res, next
     }
   }
 );
-module.exports = router;
+module.exports = routinesRouter;
 

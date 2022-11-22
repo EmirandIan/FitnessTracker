@@ -1,12 +1,21 @@
 const express = require ('express');
 // const {client}= require('./db/index/')
+require('dotenv').config()
+const PORT = 3000;
+// this is morgan my middleware that is giving me responses based on information
+const morgan = require('morgan')
 
 const app= express();
+app.use(express.json());
+app.use(express.urlencoded ({extended:false}));
+app.use(morgan('dev'));
+const apiRouter = require('./routes');
 
-// client.connect();
+app.use('/api',apiRouter);
 
-app.listen(3000,()=>{
+const { client } = require('./db');
+client.connect();
+
+app.listen(PORT,()=>{
     console.log('we are up and running on port 3000')
 })
-
-console.log("one more thing jackie")

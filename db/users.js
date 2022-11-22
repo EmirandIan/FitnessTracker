@@ -1,5 +1,18 @@
 const { client } = require(".");
 
+async function getAllUsers(){
+    console.log("getting all users loser");
+    try{
+        const {rows} =await client.query(`
+        SELECT * FROM users;
+        `)
+        console.log(rows);
+        return rows
+    }catch(error){
+        console.log(error);
+    }
+}
+
 async function createUser({
     username,
     password,
@@ -25,17 +38,19 @@ async function getUser(
 ){
     console.log("getting user...")
     try{
-        const { rows } = await client.query(`
+        // console.log("here!!!", username," ",password);
+        const { rows:[user] } = await client.query(`
         SELECT * FROM users 
         WHERE username =$1;
         `,[username])
-        console.log(rows);
-        if(rows.username == username && rows.password == password ) return user
+        // console.log("rows.obj ", user);
+        if(user.username == username && user.password == password ) return user
         else{return "user and or password incorrect!"};
     } catch(error){
         console.log(error);
     }
 }
+
 async function getUserByUsername(
     username, 
 ){
@@ -69,14 +84,10 @@ async function getUserById({
     }
 }
 
-
-
-
-
-
 module.exports= {
     createUser,
     getUser,
     getUserByUsername,
-    getUserById
+    getUserById,
+    getAllUsers
 }
